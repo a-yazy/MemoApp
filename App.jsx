@@ -13,10 +13,10 @@
 */
 import React from 'react';
 
-import SignUpScreen from './src/screens/SignUpScreen';
+import MemoListScreen from './src/screens/MemoListScreen';
 
 export default function App() {
   return (
-    <SignUpScreen />
+    <MemoListScreen />
   );
 }
