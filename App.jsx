@@ -13,10 +13,10 @@
 */
 import React from 'react';
 
-import MemoListScreen from './src/screens/MemoListScreen';
+import MemoCreateScreen from './src/screens/MemoCreateScreen';
 
 export default function App() {
   return (
-    <MemoListScreen />
+    <MemoCreateScreen />
   );
 }
