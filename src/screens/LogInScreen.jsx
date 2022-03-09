@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, Alert,
 } from 'react-native';
@@ -10,10 +10,34 @@ export default function LogInScreen(props) {
   // 画面遷移用のオブジェクト
   const { navigation } = props;
 
-  // React HoolsのuseStateで値を保持
+  // --------------------
+  // 画面の値を保持：useState(React Hooks)
+  // --------------------
   // [保持したい値, 値を更新する関数] = useState('初期値');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // --------------------
+  // 画面を開いた時の処理：useEffect(React Hooks)
+  // --------------------
+  // 第２引数の配列に指定した値を監視し、変更される度にcallbackを実行する
+  // 空の配列を指定：コンポーネントがマウントされた時に１度だけ実行
+  // 省略：propsが変更されるなどして画面がアップデートされる度に実行
+  useEffect(() => {
+    // ログイン状態を監視（戻り値＝監視をキャンセルする関数）
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      // ログインしている場合
+      if (user) {
+        // 自動的に画面遷移
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MemoList' }],
+        });
+      }
+    });
+    // 画面が消える直前に実行する関数（監視をキャンセルする関数）を返す
+    return unsubscribe;
+  }, []);
 
   // Submitボタン押下時
   const handlePress = () => {
