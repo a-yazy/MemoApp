@@ -1,16 +1,41 @@
 import React, { useState } from 'react';
 import {
-  StyleSheet, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity,
+  StyleSheet, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity, Alert,
 } from 'react-native';
+import firebase from 'firebase';
 
 import Button from '../components/Button';
 
 export default function SignUpScreen(props) {
+  // 画面遷移用のオブジェクト
   const { navigation } = props;
+
   // React HoolsのuseStateで値を保持
   // [保持したい値, 値を更新する関数] = useState('初期値');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  // Submitボタン押下時
+  const handlePress = () => {
+    // firebaseでユーザー登録
+    firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // ユーザー登録ＯＫ
+        const { user } = userCredential;
+        console.log(user.uid);
+        // 画面遷移（遷移履歴をリセットして遷移後にBackできなくする）
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MemoList' }],
+        });
+      })
+      .catch((error) => {
+        // ユーザー登録ＮＧ
+        Alert.alert(error.code);
+        console.log(error.code, error.message);
+      });
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="null">
       <View style={styles.inner}>
@@ -35,13 +60,7 @@ export default function SignUpScreen(props) {
         />
         <Button
           label="Submit"
-          onPress={() => {
-            // 遷移履歴をリセット（遷移後にBackできなくする）
-            navigation.reset({
-              index: 0,
-              routes: [{ name: 'MemoList' }],
-            });
-          }}
+          onPress={handlePress}
         />
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already registerd?</Text>

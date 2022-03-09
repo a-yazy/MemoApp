@@ -10,10 +10,16 @@
   @PowerShell-2
   #expo起動（ワークディレクトリで）
   expo start
+
+  *** npmパッケージの追加・削除 ***
+  npm install firebase@^8.x
+  npm uninstall firebase --save-dev
 */
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
+import firebase from 'firebase';
+import { firebaseConfig } from './env';
 
 import MemoListScreen from './src/screens/MemoListScreen';
 import MemoCreateScreen from './src/screens/MemoCreateScreen';
@@ -23,6 +29,11 @@ import LogInScreen from './src/screens/LogInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 
 const Stack = createStackNavigator();
+
+// Firebase初期化
+if (firebase.apps.length === 0) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 export default function App() {
   return (
