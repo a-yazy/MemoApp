@@ -4,7 +4,7 @@ import {
 } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
-// コンポーネントの中でnavigationを利用するのに必要
+// コンポーネントの中でnavigationを利用するのに必要なHooks
 // ※screenにはpropsに自動的にnavigationが渡されるがコンポーネントは渡されないため
 import { useNavigation } from '@react-navigation/native';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity,
 } from 'react-native';
@@ -7,14 +7,32 @@ import Button from '../components/Button';
 
 export default function SignUpScreen(props) {
   const { navigation } = props;
+  // React HoolsのuseStateで値を保持
+  // [保持したい値, 値を更新する関数] = useState('初期値');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   return (
     <KeyboardAvoidingView style={styles.container} behavior="null">
       <View style={styles.inner}>
-
         <Text style={styles.title}>Sign Up</Text>
-        <TextInput value="Email Address" style={styles.input} />
-        <TextInput value="Password Address" style={styles.input} />
-
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={(text) => { setEmail(text); }}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          placeholder="Email Address"
+          textContentType="emailAddress"
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={(text) => { setPassword(text); }}
+          autoCapitalize="none"
+          placeholder="Password"
+          secureTextEntry
+          textContentType="password"
+        />
         <Button
           label="Submit"
           onPress={() => {
@@ -25,7 +43,6 @@ export default function SignUpScreen(props) {
             });
           }}
         />
-
         <View style={styles.footer}>
           <Text style={styles.footerText}>Already registerd?</Text>
           <TouchableOpacity
@@ -40,7 +57,6 @@ export default function SignUpScreen(props) {
             <Text style={styles.footerLink}>Log In.</Text>
           </TouchableOpacity>
         </View>
-
       </View>
     </KeyboardAvoidingView>
   );
@@ -62,7 +78,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   input: {
-    color: '#dddddd',
+    color: '#000000',
     fontSize: 16,
     height: 48,
     backgroundColor: '#ffffff',

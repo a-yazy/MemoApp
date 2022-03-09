@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet, View, Text, TextInput, KeyboardAvoidingView, TouchableOpacity,
 } from 'react-native';
@@ -7,14 +7,30 @@ import Button from '../components/Button';
 
 export default function LogInScreen(props) {
   const { navigation } = props;
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   return (
     <KeyboardAvoidingView style={styles.container} behavior="null">
       <View style={styles.inner}>
-
         <Text style={styles.title}>Log In</Text>
-        <TextInput value="Email Address" style={styles.input} />
-        <TextInput value="Password Address" style={styles.input} />
-
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={(text) => { setEmail(text); }}
+          autoCapitalize="none"
+          keyboardType="email-address"
+          placeholder="Email Address"
+          textContentType="emailAddress"
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={(text) => { setPassword(text); }}
+          autoCapitalize="none"
+          placeholder="Password"
+          secureTextEntry
+          textContentType="password"
+        />
         <Button
           label="Submit"
           onPress={() => {
@@ -25,7 +41,6 @@ export default function LogInScreen(props) {
             });
           }}
         />
-
         <View style={styles.footer}>
           <Text style={styles.footerText}>Not registerd?</Text>
           <TouchableOpacity
@@ -62,7 +77,7 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   input: {
-    color: '#dddddd',
+    color: '#000000',
     fontSize: 16,
     height: 48,
     backgroundColor: '#ffffff',
