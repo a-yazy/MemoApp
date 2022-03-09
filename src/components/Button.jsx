@@ -4,6 +4,9 @@ import {
   StyleSheet, Text, TouchableOpacity,
 } from 'react-native';
 
+/**
+ * ボタン
+ */
 export default function Button(props) {
   const { label, onPress } = props;
   return (

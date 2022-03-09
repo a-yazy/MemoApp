@@ -8,9 +8,14 @@ import { Feather } from '@expo/vector-icons';
 // ※screenにはpropsに自動的にnavigationが渡されるがコンポーネントは渡されないため
 import { useNavigation } from '@react-navigation/native';
 
+/**
+ * メモリスト
+ */
 export default function MemoList() {
   // navigation取得
+  // ※React HooksはコンポーネントFunctionの直下でしか宣言できない
   const navigation = useNavigation();
+
   return (
     <View>
       <TouchableOpacity

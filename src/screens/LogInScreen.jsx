@@ -7,7 +7,10 @@ import firebase from 'firebase';
 import Button from '../components/Button';
 
 export default function LogInScreen(props) {
-  // 画面遷移用のオブジェクト
+  // --------------------
+  // 画面遷移用のオブジェクト(react-navigation)
+  // ※Stack.Screen で定義されたscreenには自動的に渡される
+  // --------------------
   const { navigation } = props;
 
   // --------------------
@@ -39,7 +42,9 @@ export default function LogInScreen(props) {
     return unsubscribe;
   }, []);
 
-  // Submitボタン押下時
+  // --------------------
+  // Submitボタン押下時の処理
+  // --------------------
   const handlePress = () => {
     // firebaseでログイン
     firebase.auth().signInWithEmailAndPassword(email, password)

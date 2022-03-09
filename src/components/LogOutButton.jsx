@@ -8,6 +8,9 @@ import firebase from 'firebase';
 // screenにはpropsに自動的にnavigationが渡されるがコンポーネントは渡されないので、このようにアクセス
 import { useNavigation } from '@react-navigation/native';
 
+/**
+ * ログアウトボタン
+ */
 export default function LogOutButton() {
   // navigation取得
   // ※React HooksはコンポーネントFunctionの直下でしか宣言できない
