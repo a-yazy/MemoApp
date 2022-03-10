@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, Alert } from 'react-native';
+import {
+  StyleSheet, View, Text, Alert,
+} from 'react-native';
 import firebase from 'firebase';
 
 import MemoList from '../components/MemoList';
@@ -18,7 +20,7 @@ export default function MemoListScreen(props) {
   // --------------------
   useEffect(() => {
     navigation.setOptions({
-      headerRight: () => <LogOutButton />,
+      headerRight: () => { <LogOutButton />; },
     });
   }, []);
 
@@ -46,7 +48,6 @@ export default function MemoListScreen(props) {
         const userMemos = [];
         // memosの内容を１件ずつループ
         shapshot.forEach((doc) => {
-          console.log(doc.id, doc.data());
           const data = doc.data();
           // 配列にmemoのオブジェクトを追加
           userMemos.push({
@@ -59,8 +60,7 @@ export default function MemoListScreen(props) {
         setMemos(userMemos);
         // Loading終了
         setLoading(false);
-      }, (error) => {
-        console.log(error);
+      }, () => {
         // Loading終了
         setLoading(false);
         Alert.alert('データの読み込みに失敗しました。');

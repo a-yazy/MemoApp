@@ -30,15 +30,13 @@ export default function MemoCreateScreen(props) {
       bodyText,
       updatedAd: new Date(),
     })
-      .then((docRef) => {
+      .then(() => {
         // ドキュメント追加ＯＫ
-        console.log('Created!', docRef.id);
         // 画面遷移（遷移元に戻る）
         navigation.goBack();
       })
-      .catch((error) => {
+      .catch(() => {
         // ドキュメント追加ＮＧ
-        console.log('Error!', error);
       });
   };
 

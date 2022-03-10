@@ -55,10 +55,7 @@ export default function LogInScreen(props) {
     setLoading(true);
     // firebaseでログイン
     firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // ログインＯＫ
-        const { user } = userCredential;
-        console.log(user.uid);
+      .then(() => {
         // 画面遷移（遷移履歴をリセットして遷移後にBackできなくする）
         navigation.reset({
           index: 0,

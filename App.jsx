@@ -15,6 +15,9 @@
   npm install firebase@^8.x
   npm uninstall firebase --save-dev
 */
+// *** eslintのチェックをまとめて行う ***
+//  npx eslint ./src/**/*.jsx
+
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';

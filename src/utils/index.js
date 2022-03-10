@@ -7,8 +7,6 @@ export function dateToString(date) {
 
 /**
  * エラーコードに対応したメッセージを取得
- * @param {} code 
- * @returns 
  */
 export function translateErrors(code) {
   const error = { title: 'エラー', description: '時間をおいてお試し下さい' };

@@ -20,10 +20,7 @@ export default function SignUpScreen(props) {
   const handlePress = () => {
     // firebaseでユーザー登録
     firebase.auth().createUserWithEmailAndPassword(email, password)
-      .then((userCredential) => {
-        // ユーザー登録ＯＫ
-        const { user } = userCredential;
-        console.log(user.uid);
+      .then(() => {
         // 画面遷移（遷移履歴をリセットして遷移後にBackできなくする）
         navigation.reset({
           index: 0,
