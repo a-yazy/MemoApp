@@ -1,23 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-  StyleSheet, ScrollView, Text, View,
+  StyleSheet, ScrollView, Text, View, Alert,
 } from 'react-native';
+import { string, shape } from 'prop-types';
+import firebase from 'firebase';
 
 import CircleButton from '../components/CircleButton';
+import { dateToString } from '../utils';
 
 export default function MemoDetailScreen(props) {
-  const { navigation } = props;
+  const { navigation, route } = props;
+  const { id } = route.params;
+  const [memo, setMemo] = useState(null);
+
+  // --------------------
+  // メモ監視
+  // --------------------
+  useEffect(() => {
+    // ログインユーザー取得
+    const { currentUser } = firebase.auth();
+    // 監視をキャンセルする関数（ダミー）
+    let unsubscribe = () => {};
+    // ログインユーザーが取得できる（ログイン状態）場合
+    if (currentUser) {
+      // firestore取得
+      const db = firebase.firestore();
+      // ドキュメントへの参照を取得
+      const ref = db.collection(`users/${currentUser.uid}/memos`).doc(id);
+      // memoの内容を監視（戻り値＝監視をキャンセルする関数）
+      unsubscribe = ref.onSnapshot((doc) => {
+        const data = doc.data();
+        setMemo({
+          id: doc.id,
+          bodyText: data.bodyText,
+          updatedAd: data.updatedAd.toDate(),
+        });
+      }, (error) => {
+        console.log(error);
+        Alert.alert('データの読み込みに失敗しました。');
+      });
+    }
+
+    // 監視をキャンセルする関数を返す
+    return unsubscribe;
+  }, []);
+
   return (
     <View style={styles.container}>
       <View style={styles.memoHeader}>
-        <Text style={styles.memoTitle}>買い物リスト</Text>
-        <Text style={styles.memoDate}>2020年12月24日 10:00</Text>
+        <Text style={styles.memoTitle} numberOfLines={1}>{memo && memo.bodyText}</Text>
+        <Text style={styles.memoDate}>{memo && dateToString(memo.updatedAd)}</Text>
       </View>
       <ScrollView style={styles.memoBody}>
         <Text style={styles.memoText}>
-          買い物リスト
-          書体やレイアウトを確認するために用います。
-          本文用なので使い方を間違えると不自然に見えることもありますので要注意。
+          {memo && memo.bodyText}
         </Text>
       </ScrollView>
       <CircleButton
@@ -28,6 +64,12 @@ export default function MemoDetailScreen(props) {
     </View>
   );
 }
+
+MemoDetailScreen.propTypes = {
+  route: shape({
+    params: shape({ id: string }),
+  }).isRequired,
+};
 
 const styles = StyleSheet.create({
   container: {
