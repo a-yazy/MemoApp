@@ -5,6 +5,7 @@ import {
 import firebase from 'firebase';
 
 import Button from '../components/Button';
+import Loading from '../components/Loading';
 
 export default function LogInScreen(props) {
   // --------------------
@@ -19,6 +20,7 @@ export default function LogInScreen(props) {
   // [保持したい値, 値を更新する関数] = useState('初期値');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setLoading] = useState(true);
 
   // --------------------
   // 画面を開いた時の処理：useEffect(React Hooks)
@@ -29,13 +31,15 @@ export default function LogInScreen(props) {
   useEffect(() => {
     // ログイン状態を監視（戻り値＝監視をキャンセルする関数）
     const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-      // ログインしている場合
       if (user) {
-        // 自動的に画面遷移
+        // ログインしている場合：自動的に画面遷移
         navigation.reset({
           index: 0,
           routes: [{ name: 'MemoList' }],
         });
+      } else {
+        // ログインしていない場合：ローディング解除
+        setLoading(false);
       }
     });
     // 画面が消える直前に実行する関数（監視をキャンセルする関数）を返す
@@ -46,6 +50,8 @@ export default function LogInScreen(props) {
   // Submitボタン押下時の処理
   // --------------------
   const handlePress = () => {
+    // Loading開始
+    setLoading(true);
     // firebaseでログイン
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
@@ -62,11 +68,17 @@ export default function LogInScreen(props) {
         // ログインＮＧ
         Alert.alert(error.code);
         console.log(error.code, error.message);
+      })
+      .then(() => {
+        // ＯＫ時もＮＧ時もここを通る
+        // Loading終了
+        setLoading(false);
       });
   };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="null">
+      <Loading isLoading={isLoading} />
       <View style={styles.inner}>
         <Text style={styles.title}>Log In</Text>
         <TextInput
