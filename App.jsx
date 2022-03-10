@@ -28,12 +28,14 @@ import MemoEditScreen from './src/screens/MemoEditScreen';
 import LogInScreen from './src/screens/LogInScreen';
 import SignUpScreen from './src/screens/SignUpScreen';
 
-const Stack = createStackNavigator();
+require('firebase/firestore');
 
 // Firebase初期化
 if (firebase.apps.length === 0) {
   firebase.initializeApp(firebaseConfig);
 }
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
