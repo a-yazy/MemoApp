@@ -6,6 +6,7 @@ import {
   string, shape, instanceOf, arrayOf,
 } from 'prop-types';
 import { Feather } from '@expo/vector-icons';
+import firebase from 'firebase';
 
 // コンポーネントの中でnavigationを利用するのに必要なHooks
 // ※screenにはpropsに自動的にnavigationが渡されるがコンポーネントは渡されないため
@@ -19,9 +20,44 @@ import { dateToString } from '../utils';
  */
 export default function MemoList(props) {
   const { memos } = props;
+
   // navigation取得
   // ※React HooksはコンポーネントFunctionの直下でしか宣言できない
   const navigation = useNavigation();
+
+  // --------------------
+  // 削除ボタン押下時の処理
+  // --------------------
+  const deleteMemo = (id) => {
+    // ログインユーザー取得
+    const { currentUser } = firebase.auth();
+
+    // ログインユーザーが取得できる（ログイン状態）場合
+    if (currentUser) {
+      // firestore取得
+      const db = firebase.firestore();
+      // collection(ユーザーごとmemos)への参照を取得
+      const ref = db.collection(`users/${currentUser.uid}/memos`).doc(id);
+      // 確認メッセージ
+      Alert.alert('メモを削除します', 'よろしいですか？', [
+        {
+          text: 'キャンセル',
+          onPress: () => {},
+        },
+        {
+          text: '削除する',
+          style: 'destructive',
+          onPress: () => {
+            // ドキュメント削除
+            ref.delete().catch(() => {
+              // ドキュメント削除ＮＧ
+              Alert.alert('削除に失敗しました');
+            });
+          },
+        },
+      ]);
+    }
+  };
   // リスト描画関数
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -34,7 +70,7 @@ export default function MemoList(props) {
       </View>
       <TouchableOpacity
         style={styles.memoDelete}
-        onPress={() => { Alert.alert('Are you sure?'); }}
+        onPress={() => { deleteMemo(item.id); }}
       >
         <Feather name="x" size={16} color="#B0B0B0" />
       </TouchableOpacity>

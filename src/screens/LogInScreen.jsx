@@ -6,6 +6,7 @@ import firebase from 'firebase';
 
 import Button from '../components/Button';
 import Loading from '../components/Loading';
+import { translateErrors } from '../utils';
 
 export default function LogInScreen(props) {
   // --------------------
@@ -66,8 +67,8 @@ export default function LogInScreen(props) {
       })
       .catch((error) => {
         // ログインＮＧ
-        Alert.alert(error.code);
-        console.log(error.code, error.message);
+        const errorMsg = translateErrors(error.code);
+        Alert.alert(errorMsg.title, errorMsg.description);
       })
       .then(() => {
         // ＯＫ時もＮＧ時もここを通る
